@@ -15,7 +15,6 @@ import Dashboard from "./Dashboard";
 const App = () => {
   return (
     <main className="flex flex-col items-center p-20">
-      <h1 className="text-5xl text-dark font-bold mb-5">HSL Aikataulut</h1>
       <Dashboard />
     </main>
   );

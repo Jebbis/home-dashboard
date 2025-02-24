@@ -17,7 +17,7 @@ export default function LightSlider({ lightId }) {
 
     try {
       const response = await fetch(
-        `https://${bridgeIp}/api/${bridgeId}/lights/${lightId}/state`,
+        `http://${bridgeIp}/api/${bridgeId}/lights/${lightId}/state`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

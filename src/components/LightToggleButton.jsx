@@ -8,7 +8,7 @@ export default function LightToggleButton({ lightId }) {
   const [isOn, setIsOn] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const url = `https://${bridgeIp}/api/${bridgeId}/lights/${lightId}`;
+  const url = `http://${bridgeIp}/api/${bridgeId}/lights/${lightId}`;
 
   // Fetch the current light state when component mounts
   useEffect(() => {

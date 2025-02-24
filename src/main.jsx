@@ -6,9 +6,9 @@ import { ApolloProvider } from "@apollo/client";
 import client from "./apollo-client";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </StrictMode>
+  /*   <StrictMode> */
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>
+  /*   </StrictMode> */
 );

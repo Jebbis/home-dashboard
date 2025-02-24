@@ -25,6 +25,7 @@ export default function Dashboard() {
 
   return (
     <div className="flex flex-col gap-5">
+      <h1 className="text-5xl text-dark font-bold">HSL Aikataulut</h1>
       <BusStop
         stopData={data_sydantie}
         loading={loading_sydantie}
@@ -35,6 +36,7 @@ export default function Dashboard() {
         loading={loading_rekola}
         error={error_rekola}
       />
+      <h1 className="text-5xl text-dark font-bold mt-4">Valot</h1>
       <div className="flex gap-5">
         <LightControl lightId="2" roomName="Olohuone" />
         <LightControl lightId="3" roomName="Makuuhuone" />
