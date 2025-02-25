@@ -4,7 +4,7 @@ export default function BusStop({ stopData, loading, error }) {
   if (!stopData) return <p>No data available.</p>;
 
   return (
-    <div className="p-4 bg-[#1B1B1B] rounded-lg shadow w-[500px]">
+    <div className="p-4 bg-[#1B1B1B] rounded-xl shadow w-[500px]">
       <h3 className="text-lg font-semibold text-dark pb-2">
         {stopData.stop.name}
       </h3>
@@ -34,11 +34,14 @@ export default function BusStop({ stopData, loading, error }) {
               {minutesLeft} min
             </p>
             <p className="text-dark">
-              {new Date(arrivalTime * 1000).toLocaleTimeString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })}
+              {new Date((arrivalTime - 7200) * 1000).toLocaleTimeString(
+                "en-GB",
+                {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                }
+              )}
             </p>
           </div>
         );

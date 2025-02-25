@@ -3,6 +3,7 @@ import client from "./apollo-client";
 import { GET_BUS_ARRIVALS } from "./graphql/queries";
 import BusStop from "./components/BusStop";
 import LightControl from "./components/LightControl";
+import SpotPrice from "./components/SpotPrice";
 
 export default function Dashboard() {
   const {
@@ -24,22 +25,28 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="flex flex-col gap-5">
-      <h1 className="text-5xl text-dark font-bold">HSL Aikataulut</h1>
-      <BusStop
-        stopData={data_sydantie}
-        loading={loading_sydantie}
-        error={error_sydantie}
-      />
-      <BusStop
-        stopData={data_rekola}
-        loading={loading_rekola}
-        error={error_rekola}
-      />
-      <h1 className="text-5xl text-dark font-bold mt-4">Valot</h1>
-      <div className="flex gap-5">
-        <LightControl lightId="2" roomName="Olohuone" />
-        <LightControl lightId="3" roomName="Makuuhuone" />
+    <div className="flex flex-row gap-5 justify-evenly">
+      <div className="flex flex-col gap-5">
+        <h1 className="text-5xl text-dark font-bold">HSL Aikataulut</h1>
+        <BusStop
+          stopData={data_sydantie}
+          loading={loading_sydantie}
+          error={error_sydantie}
+        />
+        <BusStop
+          stopData={data_rekola}
+          loading={loading_rekola}
+          error={error_rekola}
+        />
+      </div>
+      <div className="flex flex-col gap-5 justify-evenly">
+        <h1 className="text-5xl text-dark font-bold">Valot</h1>
+        <div className="flex gap-5">
+          <LightControl lightId="2" roomName="Olohuone" />
+          <LightControl lightId="3" roomName="Makuuhuone" />
+        </div>
+        <h1 className="text-5xl text-dark font-bold mt-4">Pörssisähkö</h1>
+        <SpotPrice />
       </div>
     </div>
   );
