@@ -2,7 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { TrendingUp } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts";
+import {
+  ReferenceLine,
+  CartesianGrid,
+  Line,
+  LineChart,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 import {
   Card,
@@ -31,10 +38,10 @@ const chartConfig = {
   },
 };
 
-export default function Component() {
+export default function SpotPrice() {
   const [chartData, setChartData] = useState([]);
   useEffect(() => {
-    fetch("http://127.0.0.1:3000/external-data")
+    fetch("http://192.168.1.106:3000/external-data")
       .then((response) => response.json())
       .then((data) => {
         if (data && Array.isArray(data)) {
@@ -59,6 +66,7 @@ export default function Component() {
       <CardContent className="">
         <ChartContainer config={chartConfig} className="">
           <LineChart accessibilityLayer data={chartData} className="">
+            <ReferenceLine x="15" stroke="gray" strokeDasharray="3 3" />
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="time"
@@ -67,15 +75,13 @@ export default function Component() {
               tickMargin={8}
               tickFormatter={(value) => value.slice(0, 3)}
             />
-            <YAxis width={10} tickLine={false} axisLine={false} />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="yesterday"
-              type="natural"
-              stroke="var(--color-yesterday)"
-              strokeWidth={2}
-              dot={false}
+            <YAxis
+              dataKey="today"
+              width={20}
+              tickLine={false}
+              axisLine={false}
             />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
               dataKey="today"
               type="natural"
@@ -83,6 +89,14 @@ export default function Component() {
               strokeWidth={2}
               dot={false}
             />
+            <Line
+              dataKey="yesterday"
+              type="natural"
+              stroke="var(--color-yesterday)"
+              strokeWidth={2}
+              dot={false}
+            />
+
             <ChartLegend content={<ChartLegendContent />} height={5} />
           </LineChart>
         </ChartContainer>
