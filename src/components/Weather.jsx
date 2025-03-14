@@ -119,11 +119,31 @@ export default function Weather() {
             <YAxis
               type="number"
               interval={0}
-              domain={["dataMin -2", "dataMax + 5"]}
+              domain={([dataMin, dataMax]) => {
+                let roundedMin = Math.floor((dataMin - 2) / 2) * 2; // Round down to nearest even
+                let roundedMax = Math.ceil((dataMax + 2) / 2) * 2; // Round up to nearest even
+
+                let gap = roundedMax - roundedMin;
+
+                // Ensure the gap is divisible by 4
+                if (gap % 4 !== 0) {
+                  roundedMax += 4 - (gap % 4); // Increase max to make gap a multiple of 4
+                }
+
+                if (!isFinite(roundedMax)) {
+                  roundedMax = 1;
+                }
+                if (!isFinite(roundedMin)) {
+                  roundedMin = 0;
+                }
+
+                return [roundedMin, roundedMax];
+              }}
               tickLine={false}
               axisLine={false}
-              allowDataOverflow={true}
+              allowDataOverflow={false}
               width={20}
+              tickCount={5}
             />
             <ReferenceLine
               x={currentHour.toString()}

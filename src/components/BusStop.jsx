@@ -3,12 +3,12 @@ export default function BusStop({ stopData, loading, error }) {
   if (error) return <p>Error fetching data</p>;
   if (!stopData) return <p>No data available.</p>;
 
+  console.log(stopData);
+
   return (
     <div className="p-4 bg-[#1B1B1B] rounded-xl shadow w-[500px]">
-      <h3 className="text-lg font-semibold text-dark pb-2">
-        {stopData.stop.name}
-      </h3>
-      {stopData.stop.stoptimesWithoutPatterns.map((bus, index) => {
+      <h3 className="text-lg font-semibold text-dark pb-2">{stopData.name}</h3>
+      {stopData.stoptimesWithoutPatterns.map((bus, index) => {
         const now = new Date();
         const secondsSinceMidnight = Math.floor(
           (now.getTime() - new Date(now.setHours(0, 0, 0, 0)).getTime()) / 1000
@@ -18,7 +18,7 @@ export default function BusStop({ stopData, loading, error }) {
           0,
           Math.floor((arrivalTime - secondsSinceMidnight) / 60)
         ); // Calculate minutes left
-        const isRekolaStop = stopData.stop.name === "Rekola"; // Change this condition as needed
+        const isRekolaStop = stopData.name === "Rekola"; // Change this condition as needed
 
         return (
           <div key={index} className="flex items-center gap-5 p-2">
