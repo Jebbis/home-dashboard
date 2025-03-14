@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TrendingUp } from "lucide-react";
 import {
   ReferenceLine,
   CartesianGrid,
@@ -14,7 +13,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -28,8 +26,8 @@ import {
 } from "@/components/ui/chart";
 
 const chartConfig = {
-  yesterday: {
-    label: "Eilen",
+  tomorrow: {
+    label: "Huomenna",
     color: "hsl(340, 70%, 53%)",
   },
   today: {
@@ -40,33 +38,80 @@ const chartConfig = {
 
 export default function SpotPrice() {
   const [chartData, setChartData] = useState([]);
+  const [higherDay, sethigherDay] = useState();
+  const [currentHour, setCurrentHour] = useState(new Date());
+  const [currentPrice, setCurrentPrice] = useState(null);
+
   useEffect(() => {
-    fetch("http://192.168.1.106:3000/external-data")
-      .then((response) => response.json())
-      .then((data) => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://192.168.1.106:3000/external-data");
+        const data = await response.json();
         if (data && Array.isArray(data)) {
-          const formattedData = data.map(({ time, yesterday, today }) => ({
+          const formattedData = data.map(({ time, tomorrow, today }) => ({
             time,
-            yesterday,
+            tomorrow,
             today,
           }));
           setChartData(formattedData);
+          sethigherDay(data[0].higherDay);
+
           console.log(formattedData);
+
+          // Find current hour's price
+          const currentHourStr = new Date()
+            .getHours()
+            .toString()
+            .padStart(2, "0");
+          const currentEntry = formattedData.find(
+            (entry) => entry.time === currentHourStr
+          );
+          if (currentEntry) {
+            setCurrentPrice(currentEntry.today);
+          }
         }
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+    setCurrentHour(new Date());
+
+    // Update time every minute
+    const minuteInterval = setInterval(() => {
+      setCurrentHour(new Date());
+    }, 60000);
+
+    // Fetch new prices every hour
+    const hourInterval = setInterval(() => {
+      fetchData();
+    }, 3600000); // 1 hour
+
+    return () => {
+      clearInterval(minuteInterval);
+      clearInterval(hourInterval);
+    };
   }, []);
 
   return (
     <Card className="bg-[#1B1B1B] border-none text-dark rounded-xl">
       <CardHeader>
         <CardTitle>Hinta nyt</CardTitle>
-        <CardTitle>0.84 c/kWh</CardTitle>
+        <CardTitle>
+          {currentPrice !== null
+            ? `${currentPrice.toFixed(1)} c/kWh`
+            : "Ladataan..."}
+        </CardTitle>
       </CardHeader>
-      <CardContent className="">
-        <ChartContainer config={chartConfig} className="">
-          <LineChart accessibilityLayer data={chartData} className="">
-            <ReferenceLine x="15" stroke="gray" strokeDasharray="3 3" />
+      <CardContent>
+        <ChartContainer config={chartConfig}>
+          <LineChart accessibilityLayer data={chartData}>
+            <ReferenceLine
+              x={currentHour.getHours().toString()}
+              stroke="gray"
+              strokeDasharray="3 3"
+            />
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="time"
@@ -76,8 +121,9 @@ export default function SpotPrice() {
               tickFormatter={(value) => value.slice(0, 3)}
             />
             <YAxis
-              dataKey="today"
-              width={20}
+              dataKey={higherDay}
+              width={30}
+              allowDecimals={false}
               tickLine={false}
               axisLine={false}
             />
@@ -90,19 +136,22 @@ export default function SpotPrice() {
               dot={false}
             />
             <Line
-              dataKey="yesterday"
+              dataKey="tomorrow"
               type="natural"
-              stroke="var(--color-yesterday)"
+              stroke="var(--color-tomorrow)"
               strokeWidth={2}
               dot={false}
             />
-
             <ChartLegend content={<ChartLegendContent />} height={5} />
           </LineChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="text-muted-foreground text-sm">
-        Päivitetty 22:51
+        Päivitetty{" "}
+        {currentHour.toLocaleTimeString("fi-FI", {
+          hour: "2-digit",
+          minute: "2-digit",
+        })}
       </CardFooter>
     </Card>
   );

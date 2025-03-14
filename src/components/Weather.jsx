@@ -26,23 +26,39 @@ import {
 export default function Weather() {
   const [chartData, setChartData] = useState([]);
   const [forecastData, setForecastData] = useState([]);
+  const [currentHour, setCurrentHour] = useState(() =>
+    getClosestThreeHourMark()
+  );
+  const [currentTemp, setCurrentTemp] = useState(null);
+
+  function getClosestThreeHourMark() {
+    const currentHour = new Date().getHours();
+    return Math.round(currentHour / 3) * 3; // Round to the nearest 3-hour mark
+  }
 
   useEffect(() => {
     async function fetchWeather() {
       try {
         const response = await fetch("http://192.168.1.106:3000/weather/today");
         const data = await response.json();
-        console.log(data);
 
         if (data.temp_data_points) {
-          const formattedData = data.temp_data_points.map((point) => ({
-            time: point.time, // "06", "12", etc.
-            temp: point.temp, // Temperature value
+          const formattedData = data.temp_data_points.map(({ time, temp }) => ({
+            time,
+            temp,
           }));
 
           setForecastData(data.nextDaysForecast);
           setChartData(formattedData);
+
           console.log(formattedData);
+
+          const currentEntry = formattedData.find(
+            (entry) => Number(entry.time) === currentHour
+          );
+          if (currentEntry) {
+            setCurrentTemp(currentEntry.temp);
+          }
         }
       } catch (error) {
         console.error("Error fetching weather data:", error);
@@ -51,6 +67,13 @@ export default function Weather() {
 
     fetchWeather();
   }, []);
+
+  useEffect(() => {
+    const updateHour = () => setCurrentHour(getClosestThreeHourMark());
+    console.log("weather time:", currentHour);
+    const interval = setInterval(updateHour, 60000);
+    return () => clearInterval(interval);
+  }, []); // Only update the time every minute
 
   const chartConfig = {
     temp: {
@@ -64,7 +87,7 @@ export default function Weather() {
       <CardHeader className="pt-6 pb-2">
         <CardTitle className="ml-2 font-bold">Lämpötila nyt</CardTitle>
         <CardTitle className="ml-2 font-bold">
-          -12
+          {currentTemp}
           <span className="text-muted-foreground text-2xl">&nbsp; °C</span>
         </CardTitle>
       </CardHeader>
@@ -102,7 +125,11 @@ export default function Weather() {
               allowDataOverflow={true}
               width={20}
             />
-            <ReferenceLine x="15" stroke="gray" strokeDasharray="3 3" />
+            <ReferenceLine
+              x={currentHour.toString()}
+              stroke="gray"
+              strokeDasharray="3 3"
+            />
           </LineChart>
         </ChartContainer>
       </CardContent>
@@ -135,8 +162,13 @@ export default function Weather() {
           </div>
         ))}
       </div>
-      <CardFooter className="text-muted-foreground text-sm mt-6">
-        Päivitetty 22:51
+      <CardFooter className="text-muted-foreground text-sm">
+        Päivitetty{" "}
+        {new Date().setHours(Number(currentHour), 0) &&
+          new Date().toLocaleTimeString("fi-FI", {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}
       </CardFooter>
     </Card>
   );

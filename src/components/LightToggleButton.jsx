@@ -1,52 +1,46 @@
 import { useState, useEffect } from "react";
 import { Power, PowerOff } from "lucide-react";
 
-const bridgeId = import.meta.env.VITE_HUE_BRIDGE_ID;
-const bridgeIp = import.meta.env.VITE_HUE_BRIDGE_IP;
-
 export default function LightToggleButton({ lightId }) {
   const [isOn, setIsOn] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const url = `http://${bridgeIp}/api/${bridgeId}/lights/${lightId}`;
 
-  // Fetch the current light state when component mounts
   useEffect(() => {
     const fetchLightState = async () => {
       try {
-        const response = await fetch(url);
-        if (!response.ok) {
-          throw new Error("Failed to fetch light state");
-        }
+        const response = await fetch(
+          `http://192.168.1.106:3000/hue/lights/${lightId}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch light state");
+
         const data = await response.json();
-        setIsOn(data.state.on);
+        setIsOn(data.isOn);
       } catch (err) {
         setError(err.message);
       }
     };
 
     fetchLightState();
-  }, [url]);
+  }, [lightId]);
 
-  // Function to toggle the light state
   const toggleLight = async () => {
     if (isOn === null) return;
-
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`${url}/state`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ on: !isOn }), // Toggle the light state
-      });
+      const response = await fetch(
+        `http://192.168.1.106:3000/hue/lights/${lightId}/state`,
+        {
+          method: "PUT",
+        }
+      );
 
-      if (!response.ok) {
-        throw new Error("Failed to update light state");
-      }
+      if (!response.ok) throw new Error("Failed to update light state");
 
-      setIsOn(!isOn);
+      const data = await response.json();
+      setIsOn(data.isOn);
     } catch (err) {
       setError(err.message);
     } finally {

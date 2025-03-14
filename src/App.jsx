@@ -14,7 +14,7 @@ import Dashboard from "./Dashboard";
 // App component
 const App = () => {
   return (
-    <main className="flex flex-col items-center p-20">
+    <main className="flex flex-col p-5">
       <Dashboard />
     </main>
   );
