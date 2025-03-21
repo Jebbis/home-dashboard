@@ -13,6 +13,7 @@ import {
 import {
   Card,
   CardContent,
+  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -95,14 +96,20 @@ export default function SpotPrice() {
   }, []);
 
   return (
-    <Card className="bg-[#1B1B1B] border-none text-dark rounded-xl">
+    <Card className="bg-[#1B1B1B] border-none text-dark rounded-xl pb-4">
       <CardHeader>
-        <CardTitle>Hinta nyt</CardTitle>
-        <CardTitle>
-          {currentPrice !== null
-            ? `${currentPrice.toFixed(1)} c/kWh`
-            : "Ladataan..."}
-        </CardTitle>
+        <CardDescription className="font-extrabold">Hinta nyt</CardDescription>
+
+        <div className="flex flex-row justify-between">
+          <CardTitle>
+            {currentPrice !== null
+              ? `${currentPrice.toFixed(1)} c/kWh`
+              : "Ladataan..."}
+          </CardTitle>
+          <CardDescription className="font-extrabold">
+            {`Saunan lämmitys: ${((currentPrice * 9) / 100).toFixed(2)}€`}
+          </CardDescription>
+        </div>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig}>
@@ -166,13 +173,13 @@ export default function SpotPrice() {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="text-muted-foreground text-sm">
+      {/*       <CardFooter className="text-muted-foreground text-sm">
         Päivitetty{" "}
         {currentHour.toLocaleTimeString("fi-FI", {
           hour: "2-digit",
           minute: "2-digit",
         })}
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 }

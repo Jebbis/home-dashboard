@@ -13,6 +13,7 @@ import {
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
   CardFooter,
@@ -83,12 +84,14 @@ export default function Weather() {
   };
 
   return (
-    <Card className="flex flex-col h-full w-[600px] rounded-xl bg-[#1B1B1B] border-none text-dark">
+    <Card className="flex flex-col w-[400px] h-full rounded-xl bg-[#1B1B1B] border-none text-dark">
       <CardHeader className="pt-6 pb-2">
-        <CardTitle className="ml-2 font-bold">Lämpötila nyt</CardTitle>
-        <CardTitle className="ml-2 font-bold">
+        <CardDescription className="font-extrabold">
+          Lämpötila nyt
+        </CardDescription>
+        <CardTitle className="font-bold">
           {currentTemp}
-          <span className="text-muted-foreground text-2xl">&nbsp; °C</span>
+          <span className=" text-xl">&nbsp; °C</span>
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -153,36 +156,39 @@ export default function Weather() {
           </LineChart>
         </ChartContainer>
       </CardContent>
-      <div className="px-8 flex flex-col gap-3">
-        <h1 className="text-dark font-semibold text-xl">
+      {/* 
+          Kolmen päivän ennuste
+      */}
+      <div className="px-6 flex flex-col gap-3 h-full">
+        <h1 className="text-dark font-semibold text-xl h-full content-end">
           Kolmen päivän ennuste
         </h1>
         {forecastData.slice(1).map((forecast, index) => (
-          <div key={index} className="flex flex-row gap-3">
-            <div className="min-w-8">
+          <div key={index} className="flex flex-row gap-3 items-center">
+            <div className="min-w-6 items-center">
               {forecast.date.charAt(0).toUpperCase() + forecast.date.slice(1)}
             </div>
-            <CloudSun />
-            <div className="min-w-12 text-end">
+            <CloudSun size={48} />
+            <div className="min-w-10 text-end items-center">
               {forecast.temp_min}{" "}
               <span className="text-muted-foreground text-base">&nbsp;°C</span>
             </div>
             <div
-              className="rounded-xl w-[500px]"
+              className="rounded-xl w-[500px] h-[25px]"
               style={{
                 background: `linear-gradient(to right, 
       hsl(${forecast.temp_min * 2 + 200}, 70%, 53%), 
       hsl(${forecast.temp_max * 2 + 200}, 70%, 53%))`,
               }}
             ></div>
-            <div className="min-w-12 ">
+            <div className="min-w-10 ">
               {forecast.temp_max}{" "}
               <span className="text-muted-foreground text-base">&nbsp;°C</span>
             </div>
           </div>
         ))}
       </div>
-      <CardFooter className="text-muted-foreground text-sm">
+      <CardFooter className="text-muted-foreground text-sm pt-6">
         Päivitetty{" "}
         {new Date().setHours(Number(currentHour), 0) &&
           new Date().toLocaleTimeString("fi-FI", {

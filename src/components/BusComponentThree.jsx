@@ -3,7 +3,8 @@ import BusStop from "./BusStop";
 
 const BUS_STOPS = [
   { id: "HSL:4720210", name: "Sydäntie" },
-  { id: "HSL:4730551", name: "Rekola" },
+  { id: "HSL:4720202", name: "Koivukylänväylä" },
+  { id: "HSL:4730551", name: "Rekolan asema" },
 ];
 
 export default function BusComponent() {

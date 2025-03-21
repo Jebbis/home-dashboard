@@ -24,27 +24,26 @@ const chartData = [
 ];
 
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
+  temperature: {
+    label: "temperature",
     color: "hsl(var(--chart-1))",
   },
-  mobile: {
-    label: "Mobile",
+  leftover: {
+    label: "leftover",
     color: "hsl(var(--chart-2))",
   },
 };
 
 export default function TemperatureCard({ roomName }) {
-  const totalVisitors = chartData[0].temperature;
   const roomData = chartData.find((data) => data.room === roomName);
 
   return (
-    <Card className="flex flex-col rounded-xl bg-[#1B1B1B] border-none text-dark h-[190px]">
+    <Card className="flex flex-col rounded-xl bg-[#1B1B1B] border-none text-dark h-[200px] w-[215px]">
       <CardHeader className="items-center ">
         <CardTitle className="">{roomName}</CardTitle>
       </CardHeader>
       <CardContent className="flex items-center justify-center">
-        <ChartContainer config={chartConfig} className="h-[200px] w-[200px]">
+        <ChartContainer config={chartConfig} className="h-[190px] w-[190px]">
           <svg width="0" height="0" style={{ position: "absolute" }}>
             <defs>
               <linearGradient id="gradientFill" x1="0" y1="0.5" x2="1" y2="0.5">
@@ -92,7 +91,7 @@ export default function TemperatureCard({ roomName }) {
               stackId="a"
               cornerRadius={5}
               fill="#1B1B1B"
-              className="stroke-transparent stroke-2"
+              className=" stroke-transparent stroke-2"
             />
             <RadialBar
               dataKey="temperature"

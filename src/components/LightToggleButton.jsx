@@ -67,7 +67,6 @@ export default function LightToggleButton({ lightId }) {
           <Power color={"#020202"} />
         )}
       </button>
-      {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
     </div>
   );
 }
