@@ -49,7 +49,7 @@ export default function BusComponent() {
   }, []);
 
   return (
-    <div className="flex flex-col gap-5 ">
+    <div className="flex flex-col gap-10 ">
       {BUS_STOPS.map((stop) => (
         <BusStop
           key={stop.id}
