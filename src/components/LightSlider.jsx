@@ -19,7 +19,7 @@ export default function LightSlider({ lightId }) {
     debounceTimeout.current = setTimeout(async () => {
       try {
         const response = await fetch(
-          `http://192.168.1.106:3000/hue/lights/${lightId}/brightness/${value}`,
+          `http://192.168.100.3:3000/hue/lights/${lightId}/brightness/${value}`,
           {
             method: "PUT",
           }

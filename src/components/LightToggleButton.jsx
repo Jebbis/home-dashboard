@@ -10,7 +10,7 @@ export default function LightToggleButton({ lightId }) {
     const fetchLightState = async () => {
       try {
         const response = await fetch(
-          `http://192.168.1.106:3000/hue/lights/${lightId}`
+          `http://192.168.100.3:3000/hue/lights/${lightId}`
         );
         if (!response.ok) throw new Error("Failed to fetch light state");
 
@@ -31,7 +31,7 @@ export default function LightToggleButton({ lightId }) {
 
     try {
       const response = await fetch(
-        `http://192.168.1.106:3000/hue/lights/${lightId}/state`,
+        `http://192.168.100.3:3000/hue/lights/${lightId}/state`,
         {
           method: "PUT",
         }

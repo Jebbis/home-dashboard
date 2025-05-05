@@ -9,7 +9,7 @@ const TimeToDestinationHSL = ({ id, name }) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://192.168.1.106:3000/timeToDestination/${id}`
+          `http://192.168.100.3:3000/timeToDestination/${id}`
         );
         if (!response.ok) {
           throw new Error(`Failed to fetch data for ${name}`);

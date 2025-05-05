@@ -9,7 +9,7 @@ import Navbar from "./components/Navbar";
 const App = () => {
   return (
     <Router>
-      <div className="flex flex-col w-[1600px] gap-5 pt-5">
+      <div className="flex flex-col w-[1550px] gap-5 pt-5">
         <Navbar />
         <main className="flex flex-col p-5">
           <Routes>

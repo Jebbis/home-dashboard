@@ -19,8 +19,8 @@ import {
 
 const chartData = [
   { room: "Olohuone", temperature: 21.5, leftover: 18.5 },
-  { room: "Makuuhuone", temperature: 12.3, leftover: 27.7 },
-  { room: "Keittiö", temperature: 28.8, leftover: 11.2 },
+  { room: "Makuuhuone", temperature: 20.3, leftover: 19.7 },
+  { room: "Keittiö", temperature: 20.8, leftover: 19.2 },
 ];
 
 const chartConfig = {

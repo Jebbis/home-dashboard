@@ -46,7 +46,7 @@ export default function SpotPrice() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://192.168.1.106:3000/external-data");
+        const response = await fetch("http://192.168.100.3:3000/external-data");
         const data = await response.json();
         if (data && Array.isArray(data)) {
           const formattedData = data.map(({ time, tomorrow, today }) => ({

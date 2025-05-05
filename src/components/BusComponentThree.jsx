@@ -18,7 +18,7 @@ export default function BusComponent() {
         const responses = await Promise.all(
           BUS_STOPS.map(async (stop) => {
             const response = await fetch(
-              `http://192.168.1.106:3000/bus/${stop.id}`
+              `http://192.168.100.3:3000/bus/${stop.id}`
             );
             if (!response.ok)
               throw new Error(`Failed to fetch data for ${stop.name}`);
